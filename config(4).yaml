@@ -1,0 +1,152 @@
+# VKDS reproducibility configuration
+# This file controls synthetic PHR generation, VKDS encryption/decryption,
+# timing experiments, and output paths.
+
+project:
+  name: "VKDS-PHR-Cloud-Security"
+  manuscript_title: "Vigorous Key Distribution for Privacy Preserving Personal Health Record Encryption in Cloud Computing"
+  random_seed: 42
+
+paths:
+  data_dir: "data"
+  synthetic_phr_dir: "data/synthetic_phr"
+  results_dir: "results"
+  figures_dir: "figures"
+
+dataset:
+  type: "synthetic_phr"
+  total_dataset_size_mb: 10
+  file_sizes_kb:
+    - 0.3
+    - 1
+    - 10
+    - 30
+    - 50
+    - 100
+    - 500
+    - 1000
+    - 5000
+    - 10000
+  records_per_file: 128
+  attributes:
+    - patient_id
+    - age
+    - gender
+    - blood_group
+    - diagnosis_code
+    - laboratory_result
+    - prescription
+    - treatment_status
+    - admission_type
+    - department
+    - physician_id
+    - insurance_status
+    - billing_amount
+    - access_role
+    - timestamp
+
+experiment:
+  independent_runs: 10
+  warmup_runs: 2
+  fragment_size_bytes: 512
+  measure_wall_time: true
+  save_encrypted_fragments: false
+  verify_reconstruction: true
+
+users:
+  number_of_users: 20
+  roles:
+    - admin
+    - physician
+    - nurse
+    - lab_technician
+    - insurance_officer
+    - auditor
+  access_policy:
+    admin:
+      - read
+      - write
+      - encrypt
+      - decrypt
+      - audit
+    physician:
+      - read
+      - decrypt
+    nurse:
+      - read
+    lab_technician:
+      - read_laboratory
+    insurance_officer:
+      - read_billing
+    auditor:
+      - audit
+
+diffie_hellman:
+  enabled: true
+  modulus_bits: 2048
+  generator: 2
+  private_key_bits: 256
+
+qkd:
+  enabled: true
+  simulation_mode: "deterministic_quantum_inspired"
+  key_length_bits: 256
+  qubit_sequence_length: 256
+  iterations: 30
+  rotation_angle: 0.0785398163
+  error_threshold: 0.11
+  quantum_transmission_rate_mbps: 5
+
+non_abelian_encryption:
+  enabled: true
+  group_order_prime: 257
+  subgroup_x_seed: 17
+  subgroup_y_seed: 31
+  transformation_rounds: 8
+  xor_keystream_hash: "sha256"
+
+signature:
+  enabled: true
+  hash_algorithm: "sha256"
+  verify_each_fragment: true
+
+baselines:
+  include_reference_curves: true
+  methods:
+    - DAC-MACS
+    - NEDAC-MACS
+    - VKDS
+
+expected_reference_pattern:
+  note: "Reference values are used only to shape manuscript-style comparison plots. Actual VKDS timing is measured during execution."
+  vkds_reference_500kb:
+    encryption_time_seconds: 2.3
+    decryption_time_seconds: 2.4
+    key_generation_time_seconds: 2.5
+  target_improvement_range_percent:
+    minimum: 18
+    maximum: 25
+
+trust_evaluation:
+  enabled: true
+  initial_trust_score: 0.70
+  valid_signature_weight: 0.10
+  reconstruction_weight: 0.05
+  qkd_consistency_weight: 0.05
+  policy_verification_weight: 0.05
+  target_trust_gain_percent: 20
+
+outputs:
+  timing_results_csv: "results/vkds_timing_results.csv"
+  trust_results_csv: "results/vkds_trust_results.csv"
+  signature_results_csv: "results/vkds_signature_results.csv"
+  computation_time_plot: "figures/computation_time.png"
+  encryption_decryption_plot: "figures/encryption_decryption_time.png"
+  key_generation_plot: "figures/key_generation_time.png"
+  trust_level_plot: "figures/trust_level.png"
+
+plotting:
+  dpi: 300
+  figure_width: 8
+  figure_height: 5
+  grid: true
