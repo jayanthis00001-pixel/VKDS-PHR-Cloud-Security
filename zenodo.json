@@ -1,0 +1,30 @@
+{
+  "title": "Vigorous Key Distribution for Privacy Preserving Personal Health Record Encryption in Cloud Computing",
+  "upload_type": "software",
+  "description": "Reproducibility package for the Vigorous Key Distribution Strategy (VKDS) for privacy-preserving Personal Health Record encryption in cloud computing. The package includes synthetic PHR data generation, Diffie-Hellman secret generation, QKD-inspired key generation, Non-Abelian Encryption based fragment encryption and decryption, hash-based signature verification, performance benchmarking, and figure-generation scripts.",
+  "creators": [
+    {
+      "name": "Jayanthi, S.",
+      "affiliation": "Department of Computer Science and Engineering, Anna University, BIT Campus, Tiruchirappalli, Tamil Nadu, India"
+    },
+    {
+      "name": "Valarmathi, A.",
+      "affiliation": "Department of Computer Applications, Anna University, BIT Campus, Tiruchirappalli, Tamil Nadu, India"
+    }
+  ],
+  "keywords": [
+    "cloud computing",
+    "cloud security",
+    "personal health record",
+    "PHR encryption",
+    "quantum key distribution",
+    "Diffie-Hellman",
+    "non-abelian encryption",
+    "signature verification",
+    "healthcare data privacy"
+  ],
+  "access_right": "open",
+  "related_identifiers": [],
+  "communities": [],
+  "notes": "This archive contains custom code and synthetic data-generation scripts only. No real patient records, clinical identifiers, or personally identifiable health information are included."
+}
